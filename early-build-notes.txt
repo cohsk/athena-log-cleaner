@@ -44,3 +44,5 @@ shell history (this bit got me as far as opening a terminal session in the shell
   
   Need to look at log format and zip / gzip issues, if any
   
+  Will need to build all the athena wrapping stuff -- appspec.yaml, etc.
+  
