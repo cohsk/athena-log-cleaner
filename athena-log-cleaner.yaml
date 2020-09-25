@@ -1,0 +1,42 @@
+# UI NodePort service.
+apiVersion: v1
+kind: Service
+metadata:
+  name: log-cleaner
+  labels:
+    app: log-cleaner
+spec:
+  type: NodePort
+  selector:
+    app: log-cleaner
+  ports:
+  - port: 4200
+    protocol: TCP
+    name: http
+    cohesityTag: ui
+---
+# UI Pod Spec.
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: log-cleaner
+  labels:
+    app: log-cleaner
+spec:
+  replicas:
+    fixed: 1
+  selector:
+    matchLabels:
+      app: log-cleaner
+  template:
+    metadata:
+      labels:
+        app: log-cleaner
+    spec:
+      containers:
+        - name: log-cleaner
+          image: athena-log-cleaner
+          resources:
+            requests:
+              cpu: 500m
+              memory: 256Mi
