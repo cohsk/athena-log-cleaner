@@ -7,6 +7,6 @@ steve.klosky@cohesity.com
 
 # Credits
 This project uses alpine linux, soscleaner and shellinabox
-https://alpinelinux.org/
-https://github.com/soscleaner/soscleaner
-https://github.com/shellinabox/shellinabox
+* https://alpinelinux.org/
+* https://github.com/soscleaner/soscleaner
+* https://github.com/shellinabox/shellinabox
