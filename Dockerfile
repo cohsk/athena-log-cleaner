@@ -23,6 +23,9 @@ RUN apk add bash
 # add git tools
 RUN apk add git
 
+# add nanon
+RUN apk add nano
+
 # add python3
 RUN apk add py-pip
 
