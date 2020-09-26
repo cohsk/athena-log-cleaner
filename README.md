@@ -9,6 +9,7 @@ Currently experimental.
 * Login to the ssh session user=cleaner password=Cohe$1ty
 * Switch to the root user context.  sudo -i
 * Run soscleaner from the command line.  soscleaner
+* Here is a short demo.  Includes usage and submitting an issue.  https://youtu.be/Bco9QDWfb64
 
 Example
 * Create a directory /tmp/in
