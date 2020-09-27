@@ -51,5 +51,8 @@ RUN echo -e 'Cohe$1ty\nCohe$1ty' | passwd cleaner
 RUN echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel 
 RUN adduser cleaner wheel
 
+# Need to copy cleanCapsule.sh from the local directory to the container
+COPY ./cleanCapsule.sh /usr/bin/
+
 # start shellinaboxd in the background each time the container starts, don't use https
 CMD /usr/bin/shellinaboxd -t
