@@ -18,26 +18,14 @@ EXPOSE 4200
 RUN apk update
 RUN apk upgrade
 
-# add bash shell
-RUN apk add bash
+# add bash shell, git tools, nano, sudo, python3, pip3
+RUN apk add bash git nano sudo python3 py-pip
 
-# add git tools
-RUN apk add git
+apk add --update --no-cache icu-dev
 
-# add nanon
-RUN apk add nano
 
-# add sudo
-RUN apk add sudo
-
-# load python2
-RUN apk add python2
-
-# load pip2
-RUN python -m ensurepip --default-pip
-
-# pull down and install soscleaner
-RUN pip install soscleaner
+# pull down and install sos
+RUN pip install git+https://github.com/sosreport/sos.git#egg=sos
 
 # addd openssh client
 RUN apk add --no-cache openssh-client
