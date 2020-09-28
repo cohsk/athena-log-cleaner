@@ -18,32 +18,17 @@ EXPOSE 4200
 RUN apk update
 RUN apk upgrade
 
-# add bash shell
-RUN apk add bash
+# add bash shell, git, nano, sudo, python2, openssh client
+RUN apk add bash git nano sudo python2 openssh-client
 
-# add git tools
-RUN apk add git
-
-# add nanon
-RUN apk add nano
-
-# add sudo
-RUN apk add sudo
-
-# load python2
-RUN apk add python2
+# add shellinabox
+RUN apk add --no-cache shellinabox --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
 
 # load pip2
 RUN python -m ensurepip --default-pip
 
 # pull down and install soscleaner
 RUN pip install soscleaner
-
-# addd openssh client
-RUN apk add --no-cache openssh-client
-
-# add shellinabox
-RUN apk add --no-cache shellinabox --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
 
 # add a linux user with a password
 RUN adduser -D cleaner
