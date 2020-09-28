@@ -32,12 +32,7 @@ workDir="${workDir// /-}"
 workDir="${workDir//:/-}"
 mkdir "$workDir"
 
-# setup a report directory
-echo "Setting up report directory"
-repDir="rep-$(date)"
-repDir="${outDir// /-}"
-repDir="${outDir//:/-}"
-mkdir "$repDir"
+cwd=$(pwd)
 
 # Unpack the .tar.gz file
 echo "Unpacking the Time Capsule"
@@ -54,31 +49,40 @@ find "$workDir"/ -name "*.gz" -exec gunzip -k {} +
 # Need to fish the final scrubbed file out of soscleaner's format
 # Need to stash the obfuscation reports 
 echo "Scrubbing Time Capsule files"
-find /tmp/"$workDir" -type f | xargs -I {} soscleaner -f {} -o /tmp/"$outDir"
+find "$cwd"/"$workDir" -type f | xargs -I {} soscleaner -f {} -o "$cwd"/"$outDir"
 
 # uncompressing output files
-find /tmp/"$outDir" -name "*.tar.gz" -exec tar -zxvf {} -C /tmp/"$outDir" \;
+find "$cwd"/"$outDir" -name "*.tar.gz" -exec tar -zxvf {} -C "$cwd"/"$outDir" \;
 
 # need to scan log files to find processed files
 keyPhrase="adding additional file for analysis"
-mkdir /tmp/"$outDir"/timecap
-for myFile in `find /tmp/"$outDir" -name "soscleaner-*.log"`
+for myFile in `find "$cwd"/"$outDir" -name "soscleaner-*.log"`
 do
-  myPath=`dirname "$myFile"`
-  myShortFileName=`basename "$myFile"`
-  mySOScleanername="${myShortFileName: -4}"
   while IFS= read -r myLine
     do
       if [[ "$myLine" == *"$keyPhrase"* ]]; then
-        echo loggger - "$myLine"
         # need to find the short filename and the short directory
         # and the soscleaner directory of the cleaned file
         # create the target directory
         # copy the cleaned file to the output directory
-        sourceDir=/tmp/"$outDir"/"$mySOScleanername"/*
-        targetDir=/tmp/"$outDir"/timecap/"$shortOutDir"
-        mkdir -p "$targetDir"
-        cp "$sourceDir" "$targetDir"
+        outDirLen=${#outDir}
+        cwdLen=${#cwd}
+
+        myFileLen=${#myFile}
+        sourceDirLen=$((myFileLen - 4 ))
+        sourceDir=${myFile:0:sourceDirLen}/*
+
+        targetDir=${myLine#*$keyPhrase}
+        offset=$(( 5 + cwdLen + outDirLen ))
+        targetDir=${targetDir:offset}
+
+        echo "$myLine"
+        echo "$myFile"
+        echo "$sourceDir"
+        echo "$targetDir"
+
+        #mkdir -p "$targetDir"
+        #cp "$sourceDir" "$targetDir"
       fi
     done < "$myFile"
 done
