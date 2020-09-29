@@ -109,8 +109,10 @@ done
 # Repack the .tar.gz file
 echo "Creating scrubbed Time Capsule Tarball"
 cd "$outDir"
-tarball="${1##*/}"
-tardir="${tarball%.*}"
+basename "$1"
+tarball="$(basename -- $1)"
+shorty=$(( ${#tarball} - 7))
+tardir=${tarball:0:shorty}
 tar -czvf "$tarball" "$tardir"
 cd ..
 
