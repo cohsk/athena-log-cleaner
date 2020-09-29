@@ -38,23 +38,34 @@ cwd=$(pwd)
 echo "Unpacking the Time Capsule"
 tar -zxvf "$1" -C "$workDir"
 
-# some files and directories have IP addresses in them.  Need to fix that
-# before we start processing
+# some files and directories have IP addresses and or domain names in the filename and the directory name.
+# Need to fix that before we start processing
 
 # Unpack any .gz files which came from the Time Capsule Tarball
 echo "Processing zipped files from the Time Capsule"
-find "$workDir"/ -name "*.gz" -exec gunzip -k {} +
+find "$workDir"/ -name "*.gz" -exec gunzip -k {} \;
 
 # Loop through all directories and files and scrub them with soscleaner
+# Skip scrubbing for .gz files
 # Need to fish the final scrubbed file out of soscleaner's format
 # Need to stash the obfuscation reports 
 echo "Scrubbing Time Capsule files"
-find "$cwd"/"$workDir" -type f | xargs -I {} soscleaner -f {} -o "$cwd"/"$outDir"
+#find "$cwd"/"$workDir" -type f -exec soscleaner -f {} -o "$cwd"/"$outDir" \;
+for myDirtyFile in `find "$cwd"/"$workDir" -type f`
+do
+   if [ "${myDirtyFile: -3}" != ".gz" ]; then
+      soscleaner -f "$myDirtyFile" -o "$cwd"/"$outDir"
+    fi
+done
 
 # uncompressing output files
 find "$cwd"/"$outDir" -name "*.tar.gz" -exec tar -zxvf {} -C "$cwd"/"$outDir" \;
 
-# need to scan log files to find processed files
+# the processed files are moved from the gz files to a subdirectory based on each cleaniing job
+# need to scan cleaning job log files to find processed files
+# then copy the processed file to a directory structure that matches 
+# the inbound time capsule format
+
 keyPhrase="adding additional file for analysis"
 for myFile in `find "$cwd"/"$outDir" -name "soscleaner-*.log"`
 do
@@ -67,32 +78,42 @@ do
         # copy the cleaned file to the output directory
         outDirLen=${#outDir}
         cwdLen=${#cwd}
-
         myFileLen=${#myFile}
         sourceDirLen=$((myFileLen - 4 ))
-        sourceDir=${myFile:0:sourceDirLen}/*
-
+        sourceDir=${myFile:0:sourceDirLen}
         targetDir=${myLine#*$keyPhrase}
         offset=$(( 5 + cwdLen + outDirLen ))
         targetDir=${targetDir:offset}
-
-        echo "$myLine"
-        echo "$myFile"
+        offset=${targetDir##*/}
+        offset=$((${#targetDir} - ${#offset}))
+        targetDir=${targetDir:0:offset}
+        targetDir="$outDir"/"$targetDir"
+        mkdir -p "$targetDir"
+        shopt -s dotglob
         echo "$sourceDir"
-        echo "$targetDir"
-
-        #mkdir -p "$targetDir"
-        #cp "$sourceDir" "$targetDir"
+        cp "$sourceDir"/* "$targetDir"
       fi
     done < "$myFile"
 done
 
 # Repack the .gz files
 echo "Zipping up scrubbed zip archives"
+for myRepackFile in `find "$workDir"/ -name "*.gz"`
+do
+   workDirLen=${#workDir}
+   outZip="$outDir"${myRepackFile:workDirLen}
+   outZip="${outZip%.*}"
+   gzip "$outZip"
+done
 
 # Repack the .tar.gz file
 echo "Creating scrubbed Time Capsule Tarball"
+cd "$outDir"
+tarball="${1##*/}"
+tardir="${tarball%.*}"
+tar -czvf "$tarball" "$tardir"
+cd ..
 
+# future option
 # Pack up the obfuscation reports
-echo "Creating obfuscation reports tarball"
-
+# echo "Creating obfuscation reports tarball"
