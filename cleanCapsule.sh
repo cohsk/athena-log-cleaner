@@ -40,6 +40,9 @@ tar -zxvf "$1" -C "$workDir"
 
 # some files and directories have IP addresses and or domain names in the filename and the directory name.
 # Need to fix that before we start processing
+find "$workDir" -type f > ./filelist.txt
+find "$workDir" -type d > ./dirlist.txt
+soscleaner -f ./filelist.txt ./dirlist.txt
 
 # Unpack any .gz files which came from the Time Capsule Tarball
 echo "Processing zipped files from the Time Capsule"
