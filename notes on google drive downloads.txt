@@ -1,0 +1,13 @@
+#!/bin/bash
+fileid="FILEIDENTIFIER"
+filename="FILENAME"
+curl -c ./cookie -s -L "https://drive.google.com/uc?export=download&id=${fileid}" > /dev/null
+curl -Lb ./cookie "https://drive.google.com/uc?export=download&confirm=`awk '/download/ {print $NF}' ./cookie`&id=${fileid}" -o ${filename}
+
+curl -L https://drive.google.com/uc?id=1fEX8GAVSrW2NklWeLOVTfEpcZApO7hBX > athena_mount
+curl -L https://drive.google.com/uc?id=1Jy5vmZiMnrkBylfHZVe78caAmMp8dJiS > athena_umount
+
+
+https://drive.google.com/file/d/1fEX8GAVSrW2NklWeLOVTfEpcZApO7hBX/view?usp=sharing
+
+https://drive.google.com/file/d/1Jy5vmZiMnrkBylfHZVe78caAmMp8dJiS/view?usp=sharing
