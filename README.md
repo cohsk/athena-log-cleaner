@@ -34,3 +34,12 @@ This project uses alpine linux, soscleaner and shellinabox
 * https://alpinelinux.org/
 * https://github.com/soscleaner/soscleaner
 * https://github.com/shellinabox/shellinabox
+
+This project uses the following alpine linux packages.  Package details are in the package database -- https://pkgs.alpinelinux.org/packages
+* bash
+* git
+* nano
+* python (python2)
+* openssh-client
+
+
