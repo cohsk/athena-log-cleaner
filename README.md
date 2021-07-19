@@ -15,7 +15,7 @@ Example
 * Create a directory /tmp/in
 * Create a directory /tmp/out
 * Put a test log file in /tmp/in
-* Run soscleaner with the command soscleaner -f /tmp/in/test.log -o /tmp/out
+* Run soscleaner with the command sudo soscleaner -f /tmp/in/test.log -o /tmp/out
 * Results are in /tmp/out
 * Look for a .tar.gz file
 * Use tar -zxvf /tmp/out/yourfilename.tar.gz to extract the processed log file
