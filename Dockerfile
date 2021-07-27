@@ -45,11 +45,14 @@ RUN apk add --no-cache openssh-client
 # add shellinabox
 RUN apk add --no-cache shellinabox --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
 
+# refresh apk repos and get latest
+RUN apk update
+RUN apk upgrade
 # add a linux user with a password
 RUN adduser -D cleaner
 RUN echo -e 'Cohe$1ty\nCohe$1ty' | passwd cleaner
 RUN echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel 
-RUN adduser cleaner wheel
+USER cleaner
 
 # start shellinaboxd in the background each time the container starts, don't use https
 CMD /usr/bin/shellinaboxd -t
