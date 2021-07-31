@@ -7,6 +7,7 @@ Currently experimental.
 * Launch an instance
 * Open the app webpage
 * Login to the ssh session user=cleaner password=Cohe$1ty
+* Note the system will ask for a new cleaner password.  Please remember/record the new password.
 * Switch to the root user context.  sudo -i
 * Run soscleaner from the command line.  soscleaner
 * Here is a short demo.  Includes usage and submitting an issue.  https://youtu.be/Bco9QDWfb64
@@ -34,6 +35,8 @@ This project uses alpine linux, soscleaner and shellinabox
 * https://alpinelinux.org/
 * https://github.com/soscleaner/soscleaner
 * https://github.com/shellinabox/shellinabox
+* --
+* Big thanks to the Cohesity team for helping on this!
 
 This project uses the following alpine linux packages.  Package details are in the package database -- https://pkgs.alpinelinux.org/packages
 * bash
@@ -41,5 +44,5 @@ This project uses the following alpine linux packages.  Package details are in t
 * nano
 * python (python2)
 * openssh-client
-
-
+* shadow
+* openssl
