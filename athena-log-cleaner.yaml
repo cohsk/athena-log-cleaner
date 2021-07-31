@@ -12,9 +12,9 @@ spec:
   ports:
   - port: 4200
     protocol: TCP
-    name: http
-    cohesityTag: ui
----
+    name: https
+    cohesityPortTag: https-ui
+
 # UI Pod Spec.
 apiVersion: apps/v1
 kind: StatefulSet

@@ -14,7 +14,8 @@ FROM alpine:latest
 EXPOSE 4200
 
 # add bash shell, git, nano, sudo, python2, openssh client
-RUN apk add --no-cache --virtual bash git nano sudo python2 openssh-client
+# added shadow package to expire password and force password change
+RUN apk add --no-cache --virtual bash git nano sudo python2 openssh-client shadow openssl
 
 # load pip2
 RUN python -m ensurepip --default-pip
@@ -28,12 +29,20 @@ RUN apk add --no-cache shellinabox --repository http://dl-3.alpinelinux.org/alpi
 # refresh apk repos and get latest
 RUN apk -U upgrade && rm -rf /var/cache/apk/*
 
-# add a linux user with a password
-RUN adduser -D cleaner
+# creating cleaner user and giving sudo access
+RUN adduser -D cleaner \
+        && echo "cleaner ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/cleaner \
+        && chmod 0440 /etc/sudoers.d/cleaner
 RUN echo -e 'Cohe$1ty\nCohe$1ty' | passwd cleaner
-RUN echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel
 
+# forcing password change on first login
+RUN chage -d 0 cleaner
+
+# setting container image user to non-root user
 USER cleaner
+WORKDIR $HOME
 
-# start shellinaboxd in the background each time the container starts, don't use https
-CMD /usr/bin/shellinaboxd -t
+# start shellinaboxd; set the certificate directory to /tmp so that the proc
+# can use this area to generatre a test certificate and serve https
+# this will help to shift this app to https for security purposes
+CMD sudo /usr/bin/shellinaboxd -c /tmp
