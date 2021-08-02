@@ -40,7 +40,7 @@ RUN chage -d 0 cleaner
 
 # setting container image user to non-root user
 USER cleaner
-WORKDIR $HOME
+WORKDIR /
 
 # start shellinaboxd; set the certificate directory to /tmp so that the proc
 # can use this area to generatre a test certificate and serve https
