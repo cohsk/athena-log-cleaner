@@ -1,17 +1,10 @@
 # Build image from nginx alpine image
 FROM nginx:1.21.1-alpine
 
-#add bash
-RUN apk add bash
-
-# refresh apk repos and get latest
-RUN apk -U upgrade && rm -rf /var/cache/apk/*
-
-#copy ssl certificate
-COPY ./certificate.crt /etc/ssl/certs/
-
-#copy ssl private key
-COPY ./nginx-private.key /etc/ssl/private/
+#add bash and openssl |then| clean apk cache |then| generate the test certificate and private key for nginx
+RUN apk --no-cache add bash=5.1.4-r0 openssl=1.1.1k-r0;\
+   rm -rf /var/cache/apk/*;\
+   openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=QC/O=Company, Inc./CN=mydomain.com" -addext "subjectAltName=DNS:mydomain.com" -newkey rsa:2048 -keyout /etc/ssl/private/nginx-private.key -out /etc/ssl/certs/certificate.crt;
 
 # copy nginx conf
 COPY ./nginx.conf /etc/nginx/
