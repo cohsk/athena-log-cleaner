@@ -24,17 +24,17 @@ Example
 # Notes
 * In the spirit of quick prototyping, extensive documentation and samples have not yet been added to this project.  The author encourages and welcomes documentation collaboration on this project.  Please contact me for details.
 * The current version is somewhat rudimentary.  For feature requests, please submit using the github project's issue management system.  Programming and engineering of new features is a collaborative effort.  Please contact me for details.
-* This app has not been "twistlock" scanned.  Please scan this prior to installing in a production environment.
 
 # Author
 Steve Klosky
 steve.klosky@cohesity.com
 
 # Credits
-This project uses alpine linux, soscleaner and shellinabox
+This project uses alpine linux, soscleaner, nginx and shellinabox
 * https://alpinelinux.org/
 * https://github.com/soscleaner/soscleaner
 * https://github.com/shellinabox/shellinabox
+* https://hub.docker.com/_/nginx
 * --
 * Big thanks to the Cohesity team for helping on this!
 
