@@ -37,15 +37,15 @@ This project uses alpine linux, soscleaner, nginx and shellinabox
 * https://hub.docker.com/_/nginx
 * --
 * Big thanks to the Cohesity team for helping on this!
-**Girish Krishnamurthy
-**Rajat Gupta
-**Ankur Rathi
-**Balachandra Shanabhag
-**OSS Team
-**Navya Bharath Badisa
-**Joy Chattaraj
-**Mark Mullenhoff
-**Billy Woods
+*Girish Krishnamurthy
+*Rajat Gupta
+*Ankur Rathi
+*Balachandra Shanabhag
+*OSS Team
+*Navya Bharath Badisa
+*Joy Chattaraj
+*Mark Mullenhoff
+*Billy Woods
 
 
 This project uses the following alpine linux packages.  Package details are in the package database -- https://pkgs.alpinelinux.org/packages
